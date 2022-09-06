@@ -32,4 +32,4 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build -t auto-gen-image .
-        docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
+        docker push -a auto-gen-image
