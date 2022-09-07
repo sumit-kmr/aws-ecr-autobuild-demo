@@ -1,10 +1,12 @@
 # pull the official base image (Background o.s for container)
-FROM node:17-alpine3.14
+#FROM node:17-alpine3.14
 
 # RUN ls
 
 #FROM public.ecr.aws/lambda/nodejs:12
-RUN npm install
+FROM ubuntu
+RUN apt-get update
+RUN apt-get -y install npm
 RUN npm install -g yarn
 RUN npm install -g anypoint-cli@latest
 COPY my-script.sh ${LAMBDA_TASK_ROOT}
