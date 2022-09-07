@@ -10,5 +10,6 @@ RUN apt-get -y install npm
 RUN npm install -g yarn
 RUN npm install -g anypoint-cli@latest
 COPY my-script.sh "~/"
+COPY credentials "~/.anypoint/credentials"
 RUN ["chmod", "+x", "~/my-script.sh"]
 ENTRYPOINT ["~/my-script.sh"]
