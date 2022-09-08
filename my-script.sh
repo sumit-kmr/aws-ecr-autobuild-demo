@@ -1,5 +1,5 @@
 #!/bin/bash
 
 echo "Echoing from shell script"
-anypoint-cli cloudhub load-balancer list exit
+anypoint-cli cloudhub load-balancer list
 
