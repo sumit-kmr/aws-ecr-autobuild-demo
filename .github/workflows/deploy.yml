@@ -1,4 +1,4 @@
-name: Deploy to production
+name: Build image and push to AWS ECR
 
 on:
   push:
@@ -7,7 +7,6 @@ on:
 jobs:
 
   deploy:
-    name: Build image
     runs-on: ubuntu-latest
 
     steps:
