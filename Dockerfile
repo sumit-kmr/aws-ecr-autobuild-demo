@@ -5,8 +5,6 @@
 
 #FROM public.ecr.aws/lambda/nodejs:12
 FROM ubuntu
-RUN apt-get update
-RUN apt-get -y install npm
 RUN npm install -g yarn
 RUN npm install -g anypoint-cli@latest
 COPY my-script.sh "~/"
