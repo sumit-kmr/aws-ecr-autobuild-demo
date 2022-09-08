@@ -11,6 +11,6 @@ RUN npm install -g yarn
 RUN npm install -g anypoint-cli@latest
 COPY my-script.sh "~/"
 COPY credentials "~/.anypoint/credentials"
-COPY config_loader.js "/usr/local/lib/node_modules/anypoint-cli/src/config_loader.js"
+COPY index.js "/usr/local/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
 RUN ["chmod", "+x", "~/my-script.sh"]
 ENTRYPOINT ["~/my-script.sh"]
