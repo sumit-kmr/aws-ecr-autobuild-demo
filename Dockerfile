@@ -22,7 +22,7 @@ FROM public.ecr.aws/lambda/nodejs:12
 RUN npm install -g yarn
 RUN npm install -g anypoint-cli@latest
 COPY credentials "~/.anypoint/credentials"
-COPY index.js "/usr/local/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
+COPY index.js "/var/lang/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
 
 # Copy our bootstrap and make it executable
 WORKDIR /var/runtime/
