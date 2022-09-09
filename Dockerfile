@@ -13,4 +13,4 @@ COPY my-script.sh "~/"
 COPY credentials "~/.anypoint/credentials"
 COPY index.js "/usr/local/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
 RUN ["chmod", "+x", "~/my-script.sh"]
-CMD ["~/my-script.sh"]
+ENTRYPOINT ["~/my-script.sh"]
