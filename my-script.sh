@@ -1,4 +1,6 @@
 #!/bin/bash
 
-echo "Echoing from shell script"
+RESPONSE="Echoing from shell script"
 #anypoint-cli cloudhub load-balancer list
+
+echo $RESPONSE
