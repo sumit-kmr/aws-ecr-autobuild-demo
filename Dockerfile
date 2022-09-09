@@ -3,7 +3,7 @@
 
 # RUN ls
 
-# FROM public.ecr.aws/lambda/nodejs:12
+FROM public.ecr.aws/lambda/nodejs:12
 #FROM ubuntu
 # RUN apt-get update
 # RUN apt-get -y install npm
@@ -17,7 +17,12 @@
 ####################################################################################################################
 
 # First we pull the base image from DockerHub
-FROM amazon/aws-lambda-provided:al2
+#FROM amazon/aws-lambda-provided:al2
+
+RUN npm install -g yarn
+RUN npm install -g anypoint-cli@latest
+COPY credentials "~/.anypoint/credentials"
+COPY index.js "/usr/local/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
 
 # Copy our bootstrap and make it executable
 WORKDIR /var/runtime/
