@@ -3,11 +3,10 @@
 
 # RUN ls
 
-#FROM public.ecr.aws/lambda/nodejs:12
+FROM public.ecr.aws/lambda/nodejs:12
 #FROM ubuntu
-FROM amazon/aws-lambda-provided:al2
-RUN apt-get update
-RUN apt-get -y install npm
+# RUN apt-get update
+# RUN apt-get -y install npm
 RUN npm install -g yarn
 RUN npm install -g anypoint-cli@latest
 COPY my-script.sh "~/"
