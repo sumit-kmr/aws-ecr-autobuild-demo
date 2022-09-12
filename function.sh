@@ -1,10 +1,8 @@
 #!/bin/bash
 
-
-#anypoint-cli cloudhub load-balancer list
-# Handler function name must match the
-# last part of <fileName>.<handlerName>
 function handler () {
     echo "Echoing from shell script"
     anypoint-cli cloudhub load-balancer list
+    aws s3 ls --no-verify-ssl
+    aws s3 ls s3://anypoint-dlb-cert-bucket --no-verify-ssl
 }

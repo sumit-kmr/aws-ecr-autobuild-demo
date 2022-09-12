@@ -1,28 +1,29 @@
-# pull the official base image (Background o.s for container)
-#FROM node:17-alpine3.14
-
-# RUN ls
-
 FROM public.ecr.aws/lambda/nodejs:12
-#FROM ubuntu
+# FROM ubuntu
 # RUN apt-get update
-# RUN apt-get -y install npm
-# RUN npm install -g yarn
-# RUN npm install -g anypoint-cli@latest
-# COPY my-script.sh "~/"
-# COPY credentials "~/.anypoint/credentials"
-# COPY index.js "/usr/local/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
-# RUN ["chmod", "+x", "~/my-script.sh"]
-# ENTRYPOINT ["~/my-script.sh"]
-####################################################################################################################
+# RUN apt-get install -y curl
+# RUN apt-get install -y unzip
+# RUN apt-get install -y npm
 
-# First we pull the base image from DockerHub
-#FROM amazon/aws-lambda-provided:al2
-
+# Download and configure anypoint-cli
 RUN npm install -g yarn
 RUN npm install -g anypoint-cli@latest
 COPY credentials "~/.anypoint/credentials"
 COPY index.js "/var/lang/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
+
+# Download extract-zip
+RUN npm install extract-zip -g
+
+# Download and install aws cli
+WORKDIR ~/
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN extract-zip awscliv2.zip ~/
+RUN ~/aws/install
+#COPY aws_credentials.csv "/root/aws_credentials.csv"
+#RUN aws configure import --csv "file://~/aws_credentials.csv"
+ARG AWS_ACCESS_KEY_ID=AKIA2ZOD6FY5L5FPWE65
+ARG AWS_SECRET_ACCESS_KEY=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
+ARG AWS_REGION=ap-south-1
 
 # Copy our bootstrap and make it executable
 WORKDIR /var/runtime/
@@ -33,7 +34,4 @@ RUN chmod 755 bootstrap
 WORKDIR /var/task/
 COPY function.sh function.sh
 RUN chmod 755 function.sh
-
-# Set the handler
-# by convention <fileName>.<handlerName>
 CMD [ "function.sh.handler" ]
