@@ -20,9 +20,9 @@ RUN extract-zip awscliv2.zip ~/
 RUN ~/aws/install
 COPY aws_credentials.csv "~/aws_credentials.csv"
 #RUN aws configure import --csv "file://~/aws_credentials.csv"
-ENV AWS_ACCESS_KEY_ID_d=AKIA2ZOD6FY5L5FPWE65
-ENV AWS_SECRET_ACCESS_KEY_d=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
-ENV AWS_REGION_d=ap-south-1
+ARG AWS_ACCESS_KEY_ID_d=AKIA2ZOD6FY5L5FPWE65
+ARG AWS_SECRET_ACCESS_KEY_d=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
+ARG AWS_REGION_d=ap-south-1
 #RUN aws s3 ls s3://anypoint-dlb-cert-bucket --no-verify-ssl
 
 # Copy our bootstrap and make it executable
