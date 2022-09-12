@@ -21,7 +21,7 @@ do
 
   # Run the handler function from the script and pass in the event data as argument
   # IMPORTANT NOTE: -f3 gets the "handler" part from function.sh.handler
-  RESPONSE=$($(echo "$_HANDLER" | cut -d. -f3) "${AWS_ACCESS_KEY_ID}" "${AWS_SECRET_ACCESS_KEY}")
+  RESPONSE=$($(echo "$_HANDLER" | cut -d. -f3) "${AWS_ACCESS_KEY_ID_d}" "${AWS_SECRET_ACCESS_KEY_d}")
 
   # Send the response
   curl -X POST "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response"  -d "$RESPONSE"
