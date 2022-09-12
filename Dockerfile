@@ -15,12 +15,11 @@ COPY index.js "/var/lang/lib/node_modules/anypoint-cli/node_modules/home-dir/ind
 RUN npm install extract-zip -g
 
 # Download and install aws cli
-WORKDIR ~/
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN extract-zip awscliv2.zip ~/
 RUN ~/aws/install
-COPY aws_credentials.csv "/root/aws_credentials.csv"
-RUN aws configure import --csv "file://~/aws_credentials.csv"
+COPY aws_credentials.csv "~/aws_credentials.csv"
+#RUN aws configure import --csv "file://~/aws_credentials.csv"
 # ARG AWS_ACCESS_KEY_ID=AKIA2ZOD6FY5L5FPWE65
 # ARG AWS_SECRET_ACCESS_KEY=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
 # ARG AWS_REGION=ap-south-1
