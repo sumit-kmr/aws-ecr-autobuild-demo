@@ -17,4 +17,5 @@ function handler () {
     ls /var/
     echo "-------"
     ls ~/
+    find ~/ -d -name ".aws"
 }

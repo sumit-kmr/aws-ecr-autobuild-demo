@@ -1,4 +1,5 @@
 FROM public.ecr.aws/lambda/nodejs:12
+ENV HOME=/tmp
 # FROM ubuntu
 # RUN apt-get update
 # RUN apt-get install -y curl
