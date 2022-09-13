@@ -12,6 +12,6 @@ function handler () {
     export AWS_CONFIG_FILE=/tmp/aws_config
     export AWS_PROFILE=user1
     aws configure list
-    aws s3 ls --no-verify-ssl
+    aws s3 ls --no-verify-ssl --profile user1
     #aws s3api get-object --bucket anypoint-dlb-cert-bucket --key test.txt /tmp/froms3.txt
 }
