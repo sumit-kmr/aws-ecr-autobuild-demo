@@ -11,6 +11,6 @@ function handler () {
     export AWS_SHARED_CREDENTIALS_FILE=/tmp/aws_credentials
     export AWS_CONFIG_FILE=/tmp/aws_config
     aws configure list
-    aws s3 ls --no-verify-ssl
+    #aws s3 ls --no-verify-ssl
     #aws s3api get-object --bucket anypoint-dlb-cert-bucket --key test.txt /tmp/froms3.txt
 }
