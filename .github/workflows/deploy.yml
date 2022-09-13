@@ -32,5 +32,5 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:sumit --build-arg AWS_ACCESS_KEY_ID=AKIA2ZOD6FY5EXR3LCEX --build-arg AWS_SECRET_ACCESS_KEY=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 --build-arg AWS_REGION=ap-south-1 .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:sumit --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_REGION=$AWS_REGION .
         docker push -a $ECR_REGISTRY/$ECR_REPOSITORY

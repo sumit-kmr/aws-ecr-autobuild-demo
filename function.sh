@@ -8,7 +8,7 @@ function handler () {
     AWS_ACCESS_KEY=$1
     AWS_SECRET_KEY=$2
     AWS_REGION=$3
-    echo "$ACCESS_KEY"
-    echo "$SECRET_KEY"
+    echo "$AWS_ACCESS_KEY"
+    echo "$AWS_SECRET_KEY"
     echo "$AWS_REGION"
 }
