@@ -17,8 +17,8 @@ RUN npm install extract-zip -g
 
 # Download and install aws cli
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-RUN extract-zip awscliv2.zip ~/
-RUN ~/aws/install
+RUN extract-zip awscliv2.zip /tmp
+RUN /tmp/aws/install
 
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
