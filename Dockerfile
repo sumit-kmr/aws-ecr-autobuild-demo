@@ -25,9 +25,6 @@ ARG AWS_REGION
 ENV awsAccessKey=$AWS_ACCESS_KEY_ID
 ENV awsSecretKey=$AWS_SECRET_ACCESS_KEY
 ENV awsRegion=$AWS_REGION
-RUN echo $awsAccessKey
-RUN echo $awsSecretKey
-RUN echo $awsRegion
 
 # Copy our bootstrap and make it executable
 WORKDIR /var/runtime/
