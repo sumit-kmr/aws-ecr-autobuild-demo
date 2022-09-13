@@ -18,14 +18,13 @@ RUN npm install extract-zip -g
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN extract-zip awscliv2.zip ~/
 RUN ~/aws/install
-COPY aws_credentials.csv "~/aws_credentials.csv"
-#RUN aws configure import --csv "file://~/aws_credentials.csv"
+
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG AWS_REGION
-ENV awsAccessKey=${AWS_ACCESS_KEY_ID}
-ENV awsSecretKey=${AWS_SECRET_ACCESS_KEY}
-ENV awsRegion=${AWS_REGION}
+ENV awsAccessKey=$AWS_ACCESS_KEY_ID
+ENV awsSecretKey=$AWS_SECRET_ACCESS_KEY
+ENV awsRegion=$AWS_REGION
 
 # Copy our bootstrap and make it executable
 WORKDIR /var/runtime/
