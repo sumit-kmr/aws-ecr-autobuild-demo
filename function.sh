@@ -15,7 +15,10 @@ function handler () {
     #aws s3 ls --no-verify-ssl --profile user1
     #aws s3api get-object --bucket anypoint-dlb-cert-bucket --key test.txt /tmp/froms3.txt
     ls /var/
-    echo "-------"
+    echo "---~/---"
     ls ~/
-    find ~/ -d -name ".aws"
+    echo "---/tmp---"
+    ls /tmp
+    echo "---/var/tmp---"
+    ls /var/tmp
 }
