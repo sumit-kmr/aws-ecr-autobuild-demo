@@ -4,11 +4,8 @@ function handler () {
     # echo "Echoing from shell script"
     # anypoint-cli cloudhub load-balancer list
     # aws configure import --csv "file://~/aws_credentials.csv"
-    # aws s3 ls --no-verify-ssl
-    AWS_ACCESS_KEY=$1
-    AWS_SECRET_KEY=$2
-    AWS_REGION=$3
-    echo "$AWS_ACCESS_KEY"
-    echo "$AWS_SECRET_KEY"
-    echo "$AWS_REGION"
+    export AWS_ACCESS_KEY_ID=$1
+    export AWS_SECRET_ACCESS_KEY=$2
+    export AWS_DEFAULT_REGION=$3
+    aws s3 ls --no-verify-ssl
 }
