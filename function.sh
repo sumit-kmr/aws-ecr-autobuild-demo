@@ -8,6 +8,6 @@ function handler () {
     export AWS_DEFAULT_REGION=$3
     #aws s3 --region $3 ls --no-verify-ssl
     aws configure list
-    aws s3api get-object --bucket anypoint-dlb-cert-bucket --key test.txt /tmp/froms3.txt
-    
+    #aws s3api get-object --bucket anypoint-dlb-cert-bucket --key test.txt /tmp/froms3.txt
+    ls /usr/local/bin/
 }

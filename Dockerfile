@@ -6,10 +6,10 @@ FROM public.ecr.aws/lambda/nodejs:12
 # RUN apt-get install -y npm
 
 # Download and configure anypoint-cli
-RUN npm install -g yarn
-RUN npm install -g anypoint-cli@latest
-COPY credentials "~/.anypoint/credentials"
-COPY index.js "/var/lang/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
+# RUN npm install -g yarn
+# RUN npm install -g anypoint-cli@latest
+# COPY credentials "~/.anypoint/credentials"
+# COPY index.js "/var/lang/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
 
 # Download extract-zip
 RUN npm install extract-zip -g
