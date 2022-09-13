@@ -10,7 +10,7 @@ function handler () {
     echo '[default]\nregion=$3\noutput=json' > /tmp/aws_config
     export AWS_SHARED_CREDENTIALS_FILE=/tmp/aws_credentials
     export AWS_CONFIG_FILE=/tmp/aws_config
-    #aws s3 --region $3 ls --no-verify-ssl
     aws configure list
+    aws s3 ls --no-verify-ssl
     #aws s3api get-object --bucket anypoint-dlb-cert-bucket --key test.txt /tmp/froms3.txt
 }
