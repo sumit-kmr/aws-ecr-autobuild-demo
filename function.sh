@@ -1,7 +1,6 @@
 #!/bin/bash
 
 function handler () {
-    npm install crypto-js
     echo "Echoing from shell script"
     echo "$AWS_LAMBDA_RUNTIME_API"
     echo "$REQUEST_ID"

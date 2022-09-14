@@ -5,7 +5,7 @@ FROM public.ecr.aws/lambda/nodejs:12
 # RUN apt-get install -y libssl-dev
 # RUN npm install -g curl@latest
 # RUN apt-get install -y npm
-RUN npm install -g crypto-js@latest
+# RUN npm install -g crypto-js@latest
 
 # Download and configure anypoint-cli
 # RUN npm install -g yarn
@@ -29,4 +29,5 @@ RUN chmod 755 bootstrap
 WORKDIR /var/task/
 COPY function.sh function.sh
 RUN chmod 755 function.sh
+RUN npm install crypto-js
 CMD [ "function.sh.handler" ]
