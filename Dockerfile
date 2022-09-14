@@ -1,5 +1,4 @@
 FROM public.ecr.aws/lambda/nodejs:12
-ENV HOME=/tmp
 # FROM ubuntu
 # RUN apt-get update
 # RUN apt-get install -y curl
@@ -17,8 +16,8 @@ RUN npm install extract-zip -g
 
 # Download and install aws cli
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-RUN extract-zip awscliv2.zip /tmp
-RUN /tmp/aws/install
+RUN extract-zip awscliv2.zip ~/
+RUN ~/aws/install
 
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
