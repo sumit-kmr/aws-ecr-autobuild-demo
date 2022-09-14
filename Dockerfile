@@ -6,8 +6,6 @@ RUN apt-get update
 RUN apt-get install -y libssl-dev
 RUN apt-get install -y curl
 RUN apt-get install -y npm
-WORKDIR ~/
-RUN npm install -g crypto-js@latest
 # RUN apk update
 # RUN apk add --update curl
 # RUN apk add --update openssl
