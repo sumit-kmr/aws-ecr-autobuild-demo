@@ -3,6 +3,7 @@
 # FROM public.ecr.aws/docker/library/ubuntu:18.04
 FROM ubuntu
 RUN apt-get update
+RUN apt-get install -y ntpdate
 RUN apt-get install -y libssl-dev
 RUN apt-get install -y curl
 RUN apt-get install -y npm

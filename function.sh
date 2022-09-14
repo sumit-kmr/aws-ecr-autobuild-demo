@@ -94,6 +94,7 @@ SignedHeaders=${HTTP_REQUEST_SIGNED_HEADERS}, Signature=${SIGNATURE}"
     echo "s3-get AWS_REGION: ${AWS_REGION}"
     echo "Downloading https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI} to $OUT_FILE"
 
+    ntpdate pool.ntp.org
     curl "https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI}" \
         -H "Authorization: ${HTTP_REQUEST_AUTHORIZATION_HEADER}" \
         -H "content-type: ${HTTP_REQUEST_CONTENT_TYPE}" \
