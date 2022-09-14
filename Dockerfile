@@ -16,12 +16,12 @@ RUN apt-get install -y npm
 # COPY credentials "~/.anypoint/credentials"
 # COPY index.js "/var/lang/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
 
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG AWS_REGION
-ENV awsAccessKey=$AWS_ACCESS_KEY_ID
-ENV awsSecretKey=$AWS_SECRET_ACCESS_KEY
-ENV awsRegion=$AWS_REGION
+# ARG AWS_ACCESS_KEY_ID
+# ARG AWS_SECRET_ACCESS_KEY
+# ARG AWS_REGION
+# ENV AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID
+# ENV AWS_SECRET_KEY=$AWS_SECRET_ACCESS_KEY
+# ENV AWS_REGION=$AWS_REGION
 
 # Copy our bootstrap and make it executable
 # WORKDIR /var/runtime/
@@ -37,6 +37,8 @@ ENV awsRegion=$AWS_REGION
 
 
 COPY function.sh "~/"
+COPY s3-get.sh "~/"
 COPY credentials "~/.anypoint/credentials"
 RUN ["chmod", "+x", "~/function.sh"]
+RUN ["chmod", "+x", "~/s3-get.sh"]
 ENTRYPOINT ["~/function.sh"]
