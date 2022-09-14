@@ -1,5 +1,6 @@
 # FROM public.ecr.aws/lambda/nodejs:12
 FROM node:17-alpine3.14
+WORKDIR ~/
 # FROM public.ecr.aws/docker/library/ubuntu:18.04
 # FROM ubuntu
 # RUN apt-get update
