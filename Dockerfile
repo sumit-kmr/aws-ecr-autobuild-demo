@@ -37,8 +37,6 @@ ENV AWS_REGION=$AWS_REGION
 
 
 COPY function.sh "~/"
-COPY s3-get.sh "~/"
 COPY credentials "~/.anypoint/credentials"
 RUN ["chmod", "+x", "~/function.sh"]
-RUN ["chmod", "+x", "~/s3-get.sh"]
 ENTRYPOINT ["~/function.sh"]
