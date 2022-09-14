@@ -1,4 +1,5 @@
-FROM public.ecr.aws/lambda/nodejs:12
+# FROM public.ecr.aws/lambda/nodejs:12
+FROM node:17-alpine3.14
 # FROM public.ecr.aws/docker/library/ubuntu:18.04
 # FROM ubuntu
 # RUN apt-get update
@@ -6,6 +7,9 @@ FROM public.ecr.aws/lambda/nodejs:12
 # RUN npm install -g curl@latest
 # RUN apt-get install -y npm
 # RUN npm install -g crypto-js@latest
+RUN apk update
+RUN apk add --update curl
+RUN apk add --update openssl
 
 # Download and configure anypoint-cli
 # RUN npm install -g yarn
@@ -21,13 +25,19 @@ ENV awsSecretKey=$AWS_SECRET_ACCESS_KEY
 ENV awsRegion=$AWS_REGION
 
 # Copy our bootstrap and make it executable
-WORKDIR /var/runtime/
-COPY bootstrap bootstrap
-RUN chmod 755 bootstrap
+# WORKDIR /var/runtime/
+# COPY bootstrap bootstrap
+# RUN chmod 755 bootstrap
 
 # Copy our function code and make it executable
-WORKDIR /var/task/
-COPY function.sh function.sh
-RUN chmod 755 function.sh
-RUN npm install crypto-js
-CMD [ "function.sh.handler" ]
+# WORKDIR /var/task/
+# COPY function.sh function.sh
+# RUN chmod 755 function.sh
+# RUN npm install crypto-js
+# CMD [ "function.sh.handler" ]
+
+
+COPY function.sh "~/"
+COPY credentials "~/.anypoint/credentials"
+RUN ["chmod", "+x", "~/function.sh"]
+ENTRYPOINT ["~/function.sh"]
