@@ -1,1 +1,0 @@
-console.log("signatureV4 called");

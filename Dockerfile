@@ -5,6 +5,7 @@ FROM public.ecr.aws/lambda/nodejs:12
 # RUN apt-get install -y libssl-dev
 # RUN npm install -g curl@latest
 # RUN apt-get install -y npm
+RUN npm install -g crypto-js@latest
 
 # Download and configure anypoint-cli
 # RUN npm install -g yarn
@@ -27,6 +28,5 @@ RUN chmod 755 bootstrap
 # Copy our function code and make it executable
 WORKDIR /var/task/
 COPY function.sh function.sh
-COPY signatureV4.js signatureV4.js
 RUN chmod 755 function.sh
 CMD [ "function.sh.handler" ]
