@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function handler () {
-    # echo "Echoing from shell script"
+    echo "Echoing from shell script"
     # anypoint-cli cloudhub load-balancer list
     stringToSign="Sumit"
     AWS_SECRET_KEY=$2
