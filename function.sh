@@ -88,6 +88,10 @@ ${AWS_REGION}/${AWS_SERVICE}/aws4_request, \
 SignedHeaders=${HTTP_REQUEST_SIGNED_HEADERS}, Signature=${SIGNATURE}"
 
     [ -d $4 ] && OUT_FILE="$4/$(basename $AWS_S3_PATH)" || OUT_FILE=$4
+    echo "s3-get CURRENT_DATE_ISO8601: $CURRENT_DATE_ISO8601"
+    echo "s3-get AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}"
+    echo "s3-get AWS_SECRET_KEY: ${AWS_SECRET_KEY}"
+    echo "s3-get AWS_REGION: ${AWS_REGION}"
     echo "Downloading https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI} to $OUT_FILE"
 
     curl "https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI}" \
