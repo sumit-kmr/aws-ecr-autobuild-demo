@@ -1,10 +1,10 @@
-# FROM public.ecr.aws/lambda/nodejs:12
-FROM public.ecr.aws/docker/library/ubuntu:18.04
+FROM public.ecr.aws/lambda/nodejs:12
+# FROM public.ecr.aws/docker/library/ubuntu:18.04
 # FROM ubuntu
-RUN apt-get update
-RUN apt-get install -y libssl-dev
-RUN apt-get install -y curl
-RUN apt-get install -y npm
+# RUN apt-get update
+# RUN apt-get install -y libssl-dev
+RUN npm install -g curl@latest
+# RUN apt-get install -y npm
 
 # Download and configure anypoint-cli
 # RUN npm install -g yarn
