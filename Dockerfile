@@ -1,16 +1,16 @@
 # FROM public.ecr.aws/lambda/nodejs:12
-FROM node:17-alpine3.14
-WORKDIR ~/
+# FROM node:17-alpine3.14
 # FROM public.ecr.aws/docker/library/ubuntu:18.04
-# FROM ubuntu
-# RUN apt-get update
-# RUN apt-get install -y libssl-dev
-# RUN npm install -g curl@latest
-# RUN apt-get install -y npm
-# RUN npm install -g crypto-js@latest
-RUN apk update
-RUN apk add --update curl
-RUN apk add --update openssl
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install -y libssl-dev
+RUN apt-get install -y curl
+RUN apt-get install -y npm
+WORKDIR ~/
+RUN npm install -g crypto-js@latest
+# RUN apk update
+# RUN apk add --update curl
+# RUN apk add --update openssl
 
 # Download and configure anypoint-cli
 # RUN npm install -g yarn
