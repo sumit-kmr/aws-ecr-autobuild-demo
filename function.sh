@@ -95,7 +95,7 @@ SignedHeaders=${HTTP_REQUEST_SIGNED_HEADERS}, Signature=${SIGNATURE}"
         -H "content-type: ${HTTP_REQUEST_CONTENT_TYPE}" \
         -H "x-amz-content-sha256: ${HTTP_REQUEST_PAYLOAD_HASH}" \
         -H "x-amz-date: ${CURRENT_DATE_ISO8601}" \
-        -f -S -o ${OUT_FILE}
+        -f -S -v -o ${OUT_FILE}
 }
 
 # Download file from S3
