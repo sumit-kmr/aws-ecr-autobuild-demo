@@ -81,7 +81,7 @@ ${HTTP_REQUEST_PAYLOAD_HASH}"
         printf "${stringToSign}" | openssl dgst -sha256 -mac HMAC -macopt hexkey:"${signingKey}" | sed 's/(stdin)= //'
     }
 
-    SIGNATURE="$(create_signature)"
+    SIGNATURE="$(create_signature | tail -c 64)"
     HTTP_REQUEST_AUTHORIZATION_HEADER="\
 AWS4-HMAC-SHA256 Credential=${AWS_ACCESS_KEY}/${CURRENT_DATE_DAY}/\
 ${AWS_REGION}/${AWS_SERVICE}/aws4_request, \
