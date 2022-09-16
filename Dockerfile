@@ -36,8 +36,7 @@ ENV AWS_REGION=$AWS_REGION
 # RUN npm install crypto-js
 # CMD [ "function.sh.handler" ]
 
-
-COPY function.sh "~/"
+COPY lambda_fun.sh "~/"
 COPY credentials "~/.anypoint/credentials"
-RUN ["chmod", "+x", "~/function.sh"]
-ENTRYPOINT ["~/function.sh"]
+RUN ["chmod", "+x", "~/lambda_fun.sh"]
+ENTRYPOINT ["~/lambda_fun.sh"]
