@@ -74,7 +74,11 @@ ${EMPTY_STRING_HASH}"
         -f -S -o ${OUT_FILE}
 }
 
-download_s3_file "test.txt" "/tmp"
+download_s3_file "test.txt" "fromS3.txt"
 
 echo "Downloaded file content: "
-cat /tmp/test.txt
+cat fromS3.txt
+ls
+
+# Send the response
+curl -X POST "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response" -d "response from fun"
