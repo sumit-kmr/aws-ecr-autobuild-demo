@@ -2,6 +2,7 @@
 cd ~/
 ls
 cd /tmp
+ls
 
 HEADERS="$(mktemp)"
 # Get the lambda invocation event
@@ -126,7 +127,7 @@ mkdir temp
 
 # Download all ca-certs in a temp folder
 echo "\nDownloading client certificates...\n"
-list_s3_files "ca-certs"
+#list_s3_files "ca-certs"
 for s3_key in "${s3_keys[@]}"
 do
 	file_name=${s3_key##*/}
@@ -145,7 +146,7 @@ mv ${merged_certs_name} temp/${merged_certs_name}
 echo "\nDownloading DLB certificate and private key...\n"
 cert_file_name="public.pem"
 private_key_file_name="private.pem"
-list_s3_files "dlb-cert"
+#list_s3_files "dlb-cert"
 for s3_key in "${s3_keys[@]}"
 do
 	file_name=${s3_key##*/}
@@ -158,17 +159,17 @@ do
 done
 
 # Get common name of the certificate
-cert_name=$(openssl x509 -noout -subject -in temp/$cert_file_name)
-cert_name=$(echo "${cert_name##*=}" | xargs)
+# cert_name=$(openssl x509 -noout -subject -in temp/$cert_file_name)
+# cert_name=$(echo "${cert_name##*=}" | xargs)
 
 # Replace the certificate
-echo "\nDeleting cert ${cert_name}..."
-anypoint-cli cloudhub load-balancer ssl-endpoint remove ${ANYPOINT_DLB_NAME} ${cert_name}
-echo "Uploading updated cert ${cert_name}..."
-anypoint-cli cloudhub load-balancer ssl-endpoint add --clientCertificate "temp/${merged_certs_name}" --verificationMode on $ANYPOINT_DLB_NAME "temp/${cert_file_name}" "temp/${private_key_file_name}" 
-echo "Setting ${cert_name} as default certificate..."
-anypoint-cli cloudhub load-balancer ssl-endpoint set-default $ANYPOINT_DLB_NAME $cert_name
-echo "\nCertificate replaced successfully!"
+# echo "\nDeleting cert ${cert_name}..."
+# anypoint-cli cloudhub load-balancer ssl-endpoint remove ${ANYPOINT_DLB_NAME} ${cert_name}
+# echo "Uploading updated cert ${cert_name}..."
+# anypoint-cli cloudhub load-balancer ssl-endpoint add --clientCertificate "temp/${merged_certs_name}" --verificationMode on $ANYPOINT_DLB_NAME "temp/${cert_file_name}" "temp/${private_key_file_name}" 
+# echo "Setting ${cert_name} as default certificate..."
+# anypoint-cli cloudhub load-balancer ssl-endpoint set-default $ANYPOINT_DLB_NAME $cert_name
+# echo "\nCertificate replaced successfully!"
 
 rm -r temp
 
