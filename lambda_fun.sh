@@ -5,9 +5,10 @@ HEADERS="$(mktemp)"
 EVENT_DATA=$(curl -sS -LD "$HEADERS" -X GET "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/next")
 # Extract request ID by scraping response headers received above
 REQUEST_ID=$(grep -Fi Lambda-Runtime-Aws-Request-Id "$HEADERS" | tr -d '[:space:]' | cut -d: -f2)
-cd ~/
+pwd
 ls
 cd /tmp
+pwd
 ls
 # Declare constants
 CURRENT_DATE_DAY="$(date -u '+%Y%m%d')"
@@ -163,6 +164,7 @@ done
 # cert_name=$(echo "${cert_name##*=}" | xargs)
 
 # Replace the certificate
+anypoint-cli cloudhub load-balancer list
 # echo "\nDeleting cert ${cert_name}..."
 # anypoint-cli cloudhub load-balancer ssl-endpoint remove ${ANYPOINT_DLB_NAME} ${cert_name}
 # echo "Uploading updated cert ${cert_name}..."

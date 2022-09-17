@@ -8,7 +8,7 @@ RUN apt-get install -y npm
 # Download and configure anypoint-cli
 RUN npm install -g yarn
 RUN npm install -g anypoint-cli@latest
-COPY credentials "~/.anypoint/credentials"
+# COPY credentials "~/.anypoint/credentials"
 COPY index.js "/usr/local/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
 
 # Get args from build and set env variables
@@ -18,6 +18,10 @@ ARG AWS_REGION
 ENV AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID
 ENV AWS_SECRET_KEY=$AWS_SECRET_ACCESS_KEY
 ENV AWS_REGION=$AWS_REGION
+ENV ANYPOINT_USERNAME='sumitkumar_salesforce'
+ENV ANYPOINT_PASSWORD='Kanodia543@@@!!!'
+ENV ANYPOINT_ORG='C4E'
+ENV ANYPOINT_ENV='Sandbox'
 
 # Copy the script and make it executable
 COPY lambda_fun.sh "~/"
