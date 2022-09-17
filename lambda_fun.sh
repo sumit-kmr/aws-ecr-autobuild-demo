@@ -1,15 +1,13 @@
 #!/bin/bash
 
+cd /tmp
+
 HEADERS="$(mktemp)"
 # Get the lambda invocation event
 EVENT_DATA=$(curl -sS -LD "$HEADERS" -X GET "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/next")
 # Extract request ID by scraping response headers received above
 REQUEST_ID=$(grep -Fi Lambda-Runtime-Aws-Request-Id "$HEADERS" | tr -d '[:space:]' | cut -d: -f2)
-pwd
-ls 
-cd /~/
-pwd
-ls
+
 # Declare constants
 CURRENT_DATE_DAY="$(date -u '+%Y%m%d')"
 CURRENT_DATE_ISO8601="${CURRENT_DATE_DAY}T$(date -u '+%H%M%S')Z"
