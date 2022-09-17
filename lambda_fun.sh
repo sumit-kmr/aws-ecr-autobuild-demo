@@ -69,13 +69,13 @@ ${EMPTY_STRING_HASH}"
     ${AWS_REGION}/${AWS_SERVICE}/aws4_request, \
     SignedHeaders=${HTTP_REQUEST_SIGNED_HEADERS}, Signature=${SIGNATURE}"
 
-    [ -d $2 ] && OUT_FILE="$2/$(basename $AWS_S3_PATH)" || OUT_FILE=$2
+    OUT_FILE=$2
     curl "https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI}" \
         -H "Authorization: ${HTTP_REQUEST_AUTHORIZATION_HEADER}" \
         -H "content-type: ${HTTP_REQUEST_CONTENT_TYPE}" \
         -H "x-amz-content-sha256: ${EMPTY_STRING_HASH}" \
         -H "x-amz-date: ${CURRENT_DATE_ISO8601}" \
-        -f -S -o ${OUT_FILE}
+        -f -sS -o ${OUT_FILE}
 }
 
 # List files from s3 folder.
@@ -125,7 +125,7 @@ SignedHeaders=${HTTP_REQUEST_SIGNED_HEADERS}, Signature=${SIGNATURE}"
 mkdir temp
 
 # Download all ca-certs in a temp folder
-echo "\nDownloading client certificates...\n"
+echo "Downloading client certificates..."
 list_s3_files "ca-certs"
 for s3_key in "${s3_keys[@]}"
 do
@@ -135,14 +135,14 @@ do
 done
 
 # Merge ca certs
-echo "\nMerging the certificates...\n"
+echo "Merging the certificates..."
 merged_certs_name="bundle.pem"
 cat temp/* > ${merged_certs_name}
 rm temp/*
 mv ${merged_certs_name} temp/${merged_certs_name}
 
 # Download dlb cert and private key
-echo "\nDownloading DLB certificate and private key...\n"
+echo "Downloading DLB certificate and private key..."
 cert_file_name="public.pem"
 private_key_file_name="private.pem"
 list_s3_files "dlb-cert"
@@ -162,13 +162,13 @@ cert_name=$(openssl x509 -noout -subject -in temp/$cert_file_name)
 cert_name=$(echo "${cert_name##*=}" | xargs)
 
 # Replace the certificate
-echo "\nDeleting cert ${cert_name}..."
+echo "Deleting cert ${cert_name}..."
 anypoint-cli cloudhub load-balancer ssl-endpoint remove ${ANYPOINT_DLB_NAME} ${cert_name}
 echo "Uploading updated cert ${cert_name}..."
 anypoint-cli cloudhub load-balancer ssl-endpoint add --clientCertificate "temp/${merged_certs_name}" --verificationMode on $ANYPOINT_DLB_NAME "temp/${cert_file_name}" "temp/${private_key_file_name}" 
 echo "Setting ${cert_name} as default certificate..."
 anypoint-cli cloudhub load-balancer ssl-endpoint set-default $ANYPOINT_DLB_NAME $cert_name
-echo "\nCertificate replaced successfully!"
+echo "Certificate replaced successfully!"
 
 rm -r temp
 
