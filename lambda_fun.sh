@@ -176,4 +176,4 @@ echo "Certificate replaced successfully!"
 rm -r temp
 
 # Send the response
-curl -X -sS POST "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response" -d "Lambda function ran successfully"
+curl -sS -X POST "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response" -d "Lambda function ran successfully"
