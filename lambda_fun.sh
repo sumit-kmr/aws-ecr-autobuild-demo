@@ -162,6 +162,9 @@ cert_name=$(openssl x509 -noout -subject -in temp/$cert_file_name)
 cert_name=$(echo "${cert_name##*=}" | xargs)
 
 # Replace the certificate
+dummy_cert_name='dummy'
+echo "Setting ${dummy_cert_name} as default certificate..."
+anypoint-cli cloudhub load-balancer ssl-endpoint set-default $ANYPOINT_DLB_NAME $dummy_cert_name
 echo "Deleting cert ${cert_name}..."
 anypoint-cli cloudhub load-balancer ssl-endpoint remove ${ANYPOINT_DLB_NAME} ${cert_name}
 echo "Uploading updated cert ${cert_name}..."
@@ -173,4 +176,4 @@ echo "Certificate replaced successfully!"
 rm -r temp
 
 # Send the response
-curl -X POST "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response" -d "Lambda function ran successfully"
+curl -X -sS POST "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response" -d "Lambda function ran successfully"
