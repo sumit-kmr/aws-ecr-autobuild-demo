@@ -7,15 +7,204 @@ HEADERS="$(mktemp)"
 EVENT_DATA=$(curl -sS -LD "$HEADERS" -X GET "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/next")
 # Extract request ID by scraping response headers received above
 REQUEST_ID=$(grep -Fi Lambda-Runtime-Aws-Request-Id "$HEADERS" | tr -d '[:space:]' | cut -d: -f2)
+#-----------------------------------------------------------------
+# # Declare constants
+# CURRENT_DATE_DAY="$(date -u '+%Y%m%d')"
+# CURRENT_DATE_ISO8601="${CURRENT_DATE_DAY}T$(date -u '+%H%M%S')Z"
+# EMPTY_STRING_HASH="$(printf "" | openssl dgst -sha256 | sed 's/^.* //')"
+# AWS_SERVICE='s3'
+# AWS_S3_BUCKET_NAME='anypoint-dlb-cert-bucket'
+# ANYPOINT_DLB_NAME='wdapi-sbx-dlb-us-west'
+# declare -a s3_keys # declare array
 
-# Declare constants
+# # Create an SHA-256 hash in hexadecimal.
+# # Usage:
+# #   hash_sha256 <string>
+# function hash_sha256 {
+#   printf "${1}" | openssl dgst -sha256 | sed 's/^.* //'
+# }
+
+# # Create an SHA-256 hmac in hexadecimal.
+# # Usage:
+# #   hmac_sha256 <key> <data>
+# function hmac_sha256 {
+#   printf "${2}" | openssl dgst -sha256 -mac HMAC -macopt "${1}" | sed 's/^.* //'
+# }
+
+# # Create the signature.
+# # Usage:
+# #   create_signature <canonical_request>
+# function create_signature {
+#     stringToSign="AWS4-HMAC-SHA256\n${CURRENT_DATE_ISO8601}\n${CURRENT_DATE_DAY}/${AWS_REGION}/${AWS_SERVICE}/aws4_request\n$(hash_sha256 "${1}")"
+#     dateKey=$(hmac_sha256 key:"AWS4${AWS_SECRET_KEY}" "${CURRENT_DATE_DAY}")
+#     regionKey=$(hmac_sha256 hexkey:"${dateKey}" "${AWS_REGION}")
+#     serviceKey=$(hmac_sha256 hexkey:"${regionKey}" "${AWS_SERVICE}")
+#     signingKey=$(hmac_sha256 hexkey:"${serviceKey}" "aws4_request")
+
+#     printf "${stringToSign}" | openssl dgst -sha256 -mac HMAC -macopt hexkey:"${signingKey}" | sed 's/(stdin)= //'
+# }
+
+# # Download the file from S3.
+# # Usage:
+# #   download_s3_file <s3_object_key> <output_path>
+# function download_s3_file {
+#     AWS_S3_PATH="$(echo $1 | sed 's;^\([^/]\);/\1;')"
+#     AWS_SERVICE_ENDPOINT_URL="${AWS_SERVICE}.${AWS_REGION}.amazonaws.com"
+#     HTTP_CANONICAL_REQUEST_URI="/${AWS_S3_BUCKET_NAME}${AWS_S3_PATH}"
+#     HTTP_REQUEST_CONTENT_TYPE='application/octet-stream'
+#     HTTP_CANONICAL_REQUEST_HEADERS="content-type:${HTTP_REQUEST_CONTENT_TYPE}
+# host:${AWS_SERVICE_ENDPOINT_URL}
+# x-amz-content-sha256:${EMPTY_STRING_HASH}
+# x-amz-date:${CURRENT_DATE_ISO8601}"
+#     # Note: The signed headers must match the canonical request headers.
+#     HTTP_REQUEST_SIGNED_HEADERS="content-type;host;x-amz-content-sha256;x-amz-date"
+#     HTTP_CANONICAL_REQUEST="GET
+# ${HTTP_CANONICAL_REQUEST_URI}\n
+# ${HTTP_CANONICAL_REQUEST_HEADERS}\n
+# ${HTTP_REQUEST_SIGNED_HEADERS}
+# ${EMPTY_STRING_HASH}"
+#     SIGNATURE="$(create_signature "${HTTP_CANONICAL_REQUEST}" | tail -c 65)"
+#     HTTP_REQUEST_AUTHORIZATION_HEADER="\
+#     AWS4-HMAC-SHA256 Credential=${AWS_ACCESS_KEY}/${CURRENT_DATE_DAY}/\
+#     ${AWS_REGION}/${AWS_SERVICE}/aws4_request, \
+#     SignedHeaders=${HTTP_REQUEST_SIGNED_HEADERS}, Signature=${SIGNATURE}"
+
+#     OUT_FILE=$2
+#     curl "https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI}" \
+#         -H "Authorization: ${HTTP_REQUEST_AUTHORIZATION_HEADER}" \
+#         -H "content-type: ${HTTP_REQUEST_CONTENT_TYPE}" \
+#         -H "x-amz-content-sha256: ${EMPTY_STRING_HASH}" \
+#         -H "x-amz-date: ${CURRENT_DATE_ISO8601}" \
+#         -f -sS -o ${OUT_FILE}
+# }
+
+# # List files from s3 folder.
+# # Usage:
+# #   list_s3_files <folder_name>
+# function list_s3_files {
+#   AWS_SERVICE_ENDPOINT_URL="${AWS_S3_BUCKET_NAME}.${AWS_SERVICE}.${AWS_REGION}.amazonaws.com"
+# 	HTTP_CANONICAL_REQUEST_URI="/"
+# 	HTTP_CANONICAL_QUERY_STRING="list-type=2&prefix=${1}"
+# 	HTTP_CANONICAL_REQUEST_HEADERS="host:${AWS_SERVICE_ENDPOINT_URL}
+# x-amz-content-sha256:${EMPTY_STRING_HASH}
+# x-amz-date:${CURRENT_DATE_ISO8601}"
+# 	HTTP_REQUEST_SIGNED_HEADERS="host;x-amz-content-sha256;x-amz-date"
+# 	HTTP_CANONICAL_REQUEST="GET
+# ${HTTP_CANONICAL_REQUEST_URI}
+# ${HTTP_CANONICAL_QUERY_STRING}
+# ${HTTP_CANONICAL_REQUEST_HEADERS}\n
+# ${HTTP_REQUEST_SIGNED_HEADERS}
+# ${EMPTY_STRING_HASH}"
+# 	SIGNATURE="$(create_signature "${HTTP_CANONICAL_REQUEST}" | tail -c 65)"
+#   HTTP_REQUEST_AUTHORIZATION_HEADER="\
+# AWS4-HMAC-SHA256 Credential=${AWS_ACCESS_KEY}/${CURRENT_DATE_DAY}/\
+# ${AWS_REGION}/${AWS_SERVICE}/aws4_request, \
+# SignedHeaders=${HTTP_REQUEST_SIGNED_HEADERS}, Signature=${SIGNATURE}"
+
+#   temp_xml_file="lists3resp.xml"
+#   curl "https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI}?${HTTP_CANONICAL_QUERY_STRING}" \
+#     -H "Authorization: ${HTTP_REQUEST_AUTHORIZATION_HEADER}" \
+#     -H "x-amz-content-sha256: ${EMPTY_STRING_HASH}" \
+#     -H "x-amz-date: ${CURRENT_DATE_ISO8601}" \
+#     -k -sS -o ${temp_xml_file}
+	
+	
+#   read_xml () { local IFS=\> ; read -d \< TAG VALUE ;}
+
+#   s3_keys=()
+#   i=0
+#   while read_xml; do
+#     if [[ $TAG == "Key" && $VALUE != "${1}/" ]]; then
+#       s3_keys[i++]=$VALUE
+#       fi
+#   done < $temp_xml_file
+#   rm $temp_xml_file
+# }
+
+
+# mkdir temp
+
+# # Download all ca-certs in a temp folder
+# echo "Downloading client certificates..."
+# list_s3_files "ca-certs"
+# for s3_key in "${s3_keys[@]}"
+# do
+# 	file_name=${s3_key##*/}
+# 	download_s3_file "${s3_key}" "temp/${file_name}"
+#   echo "Downloaded: ${file_name}"
+# done
+
+# # Merge ca certs
+# echo "Merging the certificates..."
+# merged_certs_name="bundle.pem"
+# cat temp/* > ${merged_certs_name}
+# rm temp/*
+# mv ${merged_certs_name} temp/${merged_certs_name}
+
+# # Download dlb cert and private key
+# echo "Downloading DLB certificate and private key..."
+# cert_file_name="public.pem"
+# private_key_file_name="private.pem"
+# list_s3_files "dlb-cert"
+# for s3_key in "${s3_keys[@]}"
+# do
+# 	file_name=${s3_key##*/}
+# 	if [[ $file_name == *"public"* ]]; then
+# 		download_s3_file "${s3_key}" "temp/$cert_file_name"
+# 	else
+# 		download_s3_file "${s3_key}" "temp/$private_key_file_name"
+# 	fi
+#   echo "Downloaded: ${file_name}"
+# done
+
+# # Get common name of the certificate
+# cert_name=$(openssl x509 -noout -subject -in temp/$cert_file_name)
+# cert_name=$(echo "${cert_name##*=}" | xargs)
+
+# # Replace the certificate
+
+# # Setting dummy cert as default cert
+# dummy_cert_name='dummy'
+# echo "Setting ${dummy_cert_name} as default certificate..."
+# i=0
+# error_occured=false
+# while [ $i -lt 3 ]
+# do
+# 	if [[ $i -gt 0 ]]; then
+# 		echo "Retry attempt ${i}..."
+# 	fi
+# 	{ 
+# 		anypoint-cli cloudhub load-balancer ssl-endpoint set-default $ANYPOINT_DLB_NAME $dummy_cert_name &&
+# 		echo "deleted successfully!" &&
+#     error_occured=false
+# 		break
+# 	} || { 
+# 		echo "Some error occured while setting ${dummy_cert_name} as default certificate."
+# 		((i++))
+#     error_occured=true
+# 	  }
+# done
+
+# if [[ $error_occured == true ]]; then
+# 		echo "Retry attempt ${i}..."
+# fi
+
+# echo "Deleting cert ${cert_name}..."
+# anypoint-cli cloudhub load-balancer ssl-endpoint remove ${ANYPOINT_DLB_NAME} ${cert_name}
+# echo "Uploading updated cert ${cert_name}..."
+# anypoint-cli cloudhub load-balancer ssl-endpoint add --clientCertificate "temp/${merged_certs_name}" --verificationMode on $ANYPOINT_DLB_NAME "temp/${cert_file_name}" "temp/${private_key_file_name}" 
+# echo "Setting ${cert_name} as default certificate..."
+# anypoint-cli cloudhub load-balancer ssl-endpoint set-default $ANYPOINT_DLB_NAME $cert_name
+# echo "Certificate replaced successfully!"
+
+# rm -r temp
+# -------------------------------------------------------------------------------------------
+
 CURRENT_DATE_DAY="$(date -u '+%Y%m%d')"
 CURRENT_DATE_ISO8601="${CURRENT_DATE_DAY}T$(date -u '+%H%M%S')Z"
 EMPTY_STRING_HASH="$(printf "" | openssl dgst -sha256 | sed 's/^.* //')"
-AWS_SERVICE='s3'
-AWS_S3_BUCKET_NAME='anypoint-dlb-cert-bucket'
-ANYPOINT_DLB_NAME='wdapi-sbx-dlb-us-west'
-declare -a s3_keys # declare array
+AWS_SERVICE='sns'
+SNS_TOPIC_ARN='arn%3Aaws%3Asns%3Aap-south-1%3A741829652026%3AMyTopic'
 
 # Create an SHA-256 hash in hexadecimal.
 # Usage:
@@ -44,51 +233,16 @@ function create_signature {
     printf "${stringToSign}" | openssl dgst -sha256 -mac HMAC -macopt hexkey:"${signingKey}" | sed 's/(stdin)= //'
 }
 
-# Download the file from S3.
-# Usage:
-#   download_s3_file <s3_object_key> <output_path>
-function download_s3_file {
-    AWS_S3_PATH="$(echo $1 | sed 's;^\([^/]\);/\1;')"
-    AWS_SERVICE_ENDPOINT_URL="${AWS_SERVICE}.${AWS_REGION}.amazonaws.com"
-    HTTP_CANONICAL_REQUEST_URI="/${AWS_S3_BUCKET_NAME}${AWS_S3_PATH}"
-    HTTP_REQUEST_CONTENT_TYPE='application/octet-stream'
-    HTTP_CANONICAL_REQUEST_HEADERS="content-type:${HTTP_REQUEST_CONTENT_TYPE}
-host:${AWS_SERVICE_ENDPOINT_URL}
-x-amz-content-sha256:${EMPTY_STRING_HASH}
-x-amz-date:${CURRENT_DATE_ISO8601}"
-    # Note: The signed headers must match the canonical request headers.
-    HTTP_REQUEST_SIGNED_HEADERS="content-type;host;x-amz-content-sha256;x-amz-date"
-    HTTP_CANONICAL_REQUEST="GET
-${HTTP_CANONICAL_REQUEST_URI}\n
-${HTTP_CANONICAL_REQUEST_HEADERS}\n
-${HTTP_REQUEST_SIGNED_HEADERS}
-${EMPTY_STRING_HASH}"
-    SIGNATURE="$(create_signature "${HTTP_CANONICAL_REQUEST}" | tail -c 65)"
-    HTTP_REQUEST_AUTHORIZATION_HEADER="\
-    AWS4-HMAC-SHA256 Credential=${AWS_ACCESS_KEY}/${CURRENT_DATE_DAY}/\
-    ${AWS_REGION}/${AWS_SERVICE}/aws4_request, \
-    SignedHeaders=${HTTP_REQUEST_SIGNED_HEADERS}, Signature=${SIGNATURE}"
-
-    OUT_FILE=$2
-    curl "https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI}" \
-        -H "Authorization: ${HTTP_REQUEST_AUTHORIZATION_HEADER}" \
-        -H "content-type: ${HTTP_REQUEST_CONTENT_TYPE}" \
-        -H "x-amz-content-sha256: ${EMPTY_STRING_HASH}" \
-        -H "x-amz-date: ${CURRENT_DATE_ISO8601}" \
-        -f -sS -o ${OUT_FILE}
-}
-
 # List files from s3 folder.
 # Usage:
-#   list_s3_files <folder_name>
-function list_s3_files {
-  AWS_SERVICE_ENDPOINT_URL="${AWS_S3_BUCKET_NAME}.${AWS_SERVICE}.${AWS_REGION}.amazonaws.com"
+#   publish_message
+function publish_message {
+	AWS_SERVICE_ENDPOINT_URL="${AWS_SERVICE}.${AWS_REGION}.amazonaws.com"
 	HTTP_CANONICAL_REQUEST_URI="/"
-	HTTP_CANONICAL_QUERY_STRING="list-type=2&prefix=${1}"
+	HTTP_CANONICAL_QUERY_STRING="Action=Publish&TopicArn=${SNS_TOPIC_ARN}"
 	HTTP_CANONICAL_REQUEST_HEADERS="host:${AWS_SERVICE_ENDPOINT_URL}
-x-amz-content-sha256:${EMPTY_STRING_HASH}
 x-amz-date:${CURRENT_DATE_ISO8601}"
-	HTTP_REQUEST_SIGNED_HEADERS="host;x-amz-content-sha256;x-amz-date"
+	HTTP_REQUEST_SIGNED_HEADERS="host;x-amz-date"
 	HTTP_CANONICAL_REQUEST="GET
 ${HTTP_CANONICAL_REQUEST_URI}
 ${HTTP_CANONICAL_QUERY_STRING}
@@ -96,84 +250,20 @@ ${HTTP_CANONICAL_REQUEST_HEADERS}\n
 ${HTTP_REQUEST_SIGNED_HEADERS}
 ${EMPTY_STRING_HASH}"
 	SIGNATURE="$(create_signature "${HTTP_CANONICAL_REQUEST}" | tail -c 65)"
-  HTTP_REQUEST_AUTHORIZATION_HEADER="\
+HTTP_REQUEST_AUTHORIZATION_HEADER="\
 AWS4-HMAC-SHA256 Credential=${AWS_ACCESS_KEY}/${CURRENT_DATE_DAY}/\
 ${AWS_REGION}/${AWS_SERVICE}/aws4_request, \
 SignedHeaders=${HTTP_REQUEST_SIGNED_HEADERS}, Signature=${SIGNATURE}"
 
-  temp_xml_file="lists3resp.xml"
-  curl "https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI}?${HTTP_CANONICAL_QUERY_STRING}" \
-    -H "Authorization: ${HTTP_REQUEST_AUTHORIZATION_HEADER}" \
-    -H "x-amz-content-sha256: ${EMPTY_STRING_HASH}" \
-    -H "x-amz-date: ${CURRENT_DATE_ISO8601}" \
-    -k -sS -o ${temp_xml_file}
-	
-	
-  read_xml () { local IFS=\> ; read -d \< TAG VALUE ;}
+temp_xml_file="snsResp.xml"
+curl -X GET "https://${AWS_SERVICE_ENDPOINT_URL}${HTTP_CANONICAL_REQUEST_URI}?${HTTP_CANONICAL_QUERY_STRING}" \
+	-H "Authorization: ${HTTP_REQUEST_AUTHORIZATION_HEADER}" \
+	-H "x-amz-date: ${CURRENT_DATE_ISO8601}" \
+	-k -sS -o -
 
-  s3_keys=()
-  i=0
-  while read_xml; do
-    if [[ $TAG == "Key" && $VALUE != "${1}/" ]]; then
-      s3_keys[i++]=$VALUE
-      fi
-  done < $temp_xml_file
-  rm $temp_xml_file
 }
 
-
-mkdir temp
-
-# Download all ca-certs in a temp folder
-echo "Downloading client certificates..."
-list_s3_files "ca-certs"
-for s3_key in "${s3_keys[@]}"
-do
-	file_name=${s3_key##*/}
-	download_s3_file "${s3_key}" "temp/${file_name}"
-  echo "Downloaded: ${file_name}"
-done
-
-# Merge ca certs
-echo "Merging the certificates..."
-merged_certs_name="bundle.pem"
-cat temp/* > ${merged_certs_name}
-rm temp/*
-mv ${merged_certs_name} temp/${merged_certs_name}
-
-# Download dlb cert and private key
-echo "Downloading DLB certificate and private key..."
-cert_file_name="public.pem"
-private_key_file_name="private.pem"
-list_s3_files "dlb-cert"
-for s3_key in "${s3_keys[@]}"
-do
-	file_name=${s3_key##*/}
-	if [[ $file_name == *"public"* ]]; then
-		download_s3_file "${s3_key}" "temp/$cert_file_name"
-	else
-		download_s3_file "${s3_key}" "temp/$private_key_file_name"
-	fi
-  echo "Downloaded: ${file_name}"
-done
-
-# Get common name of the certificate
-cert_name=$(openssl x509 -noout -subject -in temp/$cert_file_name)
-cert_name=$(echo "${cert_name##*=}" | xargs)
-
-# Replace the certificate
-dummy_cert_name='dummy'
-echo "Setting ${dummy_cert_name} as default certificate..."
-anypoint-cli cloudhub load-balancer ssl-endpoint set-default $ANYPOINT_DLB_NAME $dummy_cert_name
-echo "Deleting cert ${cert_name}..."
-anypoint-cli cloudhub load-balancer ssl-endpoint remove ${ANYPOINT_DLB_NAME} ${cert_name}
-echo "Uploading updated cert ${cert_name}..."
-anypoint-cli cloudhub load-balancer ssl-endpoint add --clientCertificate "temp/${merged_certs_name}" --verificationMode on $ANYPOINT_DLB_NAME "temp/${cert_file_name}" "temp/${private_key_file_name}" 
-echo "Setting ${cert_name} as default certificate..."
-anypoint-cli cloudhub load-balancer ssl-endpoint set-default $ANYPOINT_DLB_NAME $cert_name
-echo "Certificate replaced successfully!"
-
-rm -r temp
+publish_message
 
 # Send the response
 curl -sS -X POST "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response" -d "Lambda function ran successfully"
