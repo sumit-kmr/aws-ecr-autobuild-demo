@@ -9,7 +9,6 @@ RUN apt-get install -y npm
 RUN npm install -g yarn
 RUN npm install -g anypoint-cli@latest
 COPY index.js "/usr/local/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
-RUN npm install aws4
 
 # Get args from build and set env variables
 ARG AWS_ACCESS_KEY_ID

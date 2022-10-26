@@ -6,6 +6,7 @@ echo "listing the directory..."
 ls
 cd /tmp
 
+npm install aws4
 echo "$jsfile" > signature_v4_util.js 
 
 HEADERS="$(mktemp)"
