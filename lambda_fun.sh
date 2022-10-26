@@ -3,10 +3,9 @@
 signv4js="`cat signature_v4_util.js`"
 aws4js="`cat aws4.js`"
 lrujs="`cat lru.js`"
-echo "JS File: $jsfile"
+
 cd /tmp
 
-npm install aws4
 echo "$signv4js" > signature_v4_util.js
 echo "$aws4js" > aws4.js
 echo "$lrujs" > lru.js
