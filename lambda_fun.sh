@@ -1,13 +1,15 @@
 #!/bin/bash
 
-jsfile="`cat signature_v4_util.js`"
+signv4js="`cat signature_v4_util.js`"
+aws4js="`cat aws4.js`"
+lrujs="`cat lru.js`"
 echo "JS File: $jsfile"
-echo "listing the directory..."
-ls
 cd /tmp
 
 npm install aws4
-echo "$jsfile" > signature_v4_util.js 
+echo "$signv4js" > signature_v4_util.js
+echo "$aws4js" > aws4.js
+echo "$lrujs" > lru.js
 
 HEADERS="$(mktemp)"
 # Get the lambda invocation event

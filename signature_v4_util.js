@@ -1,4 +1,4 @@
-const aws4  = require('aws4');
+const aws4  = require('./aws4');
 const fs = require('fs');
 const args = process.argv.slice(2);
 
