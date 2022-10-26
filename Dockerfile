@@ -26,7 +26,10 @@ ENV ANYPOINT_ORG='C4E'
 ENV ANYPOINT_ENV='Sandbox'
 
 # Copy the script and make it executable
+WORKDIR "~/"
 COPY lambda_fun.sh "~/"
 COPY signature_v4_util.js "~/"
+COPY signature_v4_util.js ${LAMBDA_TASK_ROOT}
+COPY signature_v4_util.js ${LAMBDA_RUNTIME_DIR}
 RUN ["chmod", "+x", "~/lambda_fun.sh"]
 ENTRYPOINT ["~/lambda_fun.sh"]

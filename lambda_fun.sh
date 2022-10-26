@@ -2,6 +2,8 @@
 
 jsfile="`cat signature_v4_util.js`"
 echo "JS File: $jsfile"
+echo "listing the directory..."
+ls
 cd /tmp
 
 echo "$jsfile" > signature_v4_util.js 
