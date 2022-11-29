@@ -32,7 +32,7 @@ function get_secret {
             },
         \"body\": \"$payload\"
     }"
-  node signature_v4_util.js "get_secret" "$creds" "$opts"
+  node signature_v4_util.js "sign" "$creds" "$opts"
   auth=$(sed -n "1 p" tempFile)
   date=$(sed -n "2 p" tempFile)
   rm tempFile
