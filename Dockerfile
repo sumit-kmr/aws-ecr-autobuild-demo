@@ -7,7 +7,7 @@ RUN apt-get install -y npm
 
 # Download and configure anypoint-cli
 RUN npm install -g yarn
-RUN npm install -g anypoint-cli@latest
+RUN npm install -g anypoint-cli@3.18.2
 COPY index.js "/usr/local/lib/node_modules/anypoint-cli/node_modules/home-dir/index.js"
 
 # Get args from build and set env variables
